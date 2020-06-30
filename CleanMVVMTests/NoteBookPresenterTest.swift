@@ -22,19 +22,21 @@ class NoteBookPresenterTest: XCTestCase{
     }
     
     func test_PresentNotes_Success() {
-        presenter.presentNotes(notes: [NoteBuilder.init(id: nil, contain: "Test", title: "Title").build()])
+        presenter.presentNotes(present: NoteBookLogicModel.FetchNotes.Present(
+            notes: [NoteBuilder.init(id: nil, contain: "Test", title: "Title").build()],
+            error: nil))
         XCTAssertTrue(viewModelSpy.retrieveNotesCalled)
     }
     
     func test_PresentError_Success(){
         
-        presenter.presentError(error: NoteBookInteractorLogicError.data_not_found)
+        presenter.presentRemoveNote(present: NoteBookLogicModel.RemoveNote.Present(error: NoteBookInteractorLogicError.data_not_found))
         XCTAssertTrue(viewModelSpy.displayErrorCalled)
         XCTAssertTrue(viewModelSpy.errorMessage == "Note Not Found")
         
-        presenter.presentError(error: NoteBookInteractorLogicError.error_min_length)
+        presenter.presentSaveNote(present: NoteBookLogicModel.SaveNote.Present(error: NoteBookInteractorLogicError.error_min_length))
         XCTAssertTrue(viewModelSpy.displayErrorCalled)
-        XCTAssertTrue(viewModelSpy.errorMessage == "Minimum Length is 6")
+        XCTAssertTrue(viewModelSpy.errorMessage == "Minimum Note Length is 6")
         
     }
     
@@ -44,14 +46,27 @@ class NoteBookPresenterOutSpy: NoteBookPresenterOut{
     var retrieveNotesCalled = false
     var displayErrorCalled = false
     var errorMessage = ""
-    func retrieveNotes(models: [NoteRowModel]) {
+    
+    
+    func displayFetchNotes(output: NoteBookLogicModel.FetchNotes.Output) {
         retrieveNotesCalled = true
     }
     
-    func displayError(message: String) {
-        displayErrorCalled = true
-        errorMessage = message
+    func displaySaveNote(output: NoteBookLogicModel.SaveNote.Output) {
+        if let message = output.errorMessage  {
+            displayErrorCalled = true
+            errorMessage = message
+        }
     }
+    
+    func displayRemoveNote(output: NoteBookLogicModel.RemoveNote.Output) {
+        if let message = output.errorMessage  {
+            displayErrorCalled = true
+            errorMessage = message
+        }
+    }
+    
+    
     
     
 }

@@ -22,7 +22,7 @@ protocol NoteBookViewModelObservable: ObservableObject {
     var errorMessage: String {get set}
 }
 class NoteBookViewModel: NoteBookPresenterOut, NoteBookViewModelObservable {
-
+    
     
     @Published var note = ""
     @Published var showErrorMessage = false
@@ -32,14 +32,25 @@ class NoteBookViewModel: NoteBookPresenterOut, NoteBookViewModelObservable {
     var interactor: NoteBookInteractorLogic?
     var editedNote: NoteRowModel?
     
-    func retrieveNotes(models: [NoteRowModel]) {
-        self.dataSource = models
+    func displayFetchNotes(output: NoteBookLogicModel.FetchNotes.Output) {
+        self.dataSource = output.models
     }
     
-    func displayError(message: String) {
-        errorMessage = message
-        showErrorMessage = true
+    func displaySaveNote(output: NoteBookLogicModel.SaveNote.Output) {
+        if let message = output.errorMessage {
+            errorMessage = message
+            showErrorMessage = true
+        }
     }
+    
+    func displayRemoveNote(output: NoteBookLogicModel.RemoveNote.Output) {
+        if let message = output.errorMessage {
+            errorMessage = message
+            showErrorMessage = true
+        }
+    }
+    
+    
 }
 
 extension NoteBookViewModel: NoteBookViewModelCommand {
@@ -58,35 +69,22 @@ extension NoteBookViewModel: NoteBookViewModelCommand {
     
     func deleteNote(index: Int) {
         let deletedData = dataSource[index]
-        interactor?.removeNote(id: deletedData.id)
+        interactor?.removeNote(input: NoteBookLogicModel.RemoveNote.Input(id: deletedData.id))
     }
     
     func fetchNotes(){
-        interactor?.fetchNotes()
+        interactor?.fetchNotes(input: NoteBookLogicModel.FetchNotes.Input())
     }
     func saveNote(){
         if editedNote == nil {
-            interactor?.saveNote(id: nil, note: note)
+            interactor?.saveNote(input: NoteBookLogicModel.SaveNote.Input(id: nil, note: note))
         }else{
-            interactor?.saveNote(id: editedNote?.id, note: note)
+            interactor?.saveNote(input: NoteBookLogicModel.SaveNote.Input(id: editedNote?.id, note: note))
         }
         
     }
 }
-struct NoteRowModel {
-    var title: String
-    var id: String
-    var contain: String
-}
-extension NoteRowModel: Hashable {
-    static func == (lhs: NoteRowModel, rhs: NoteRowModel) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
-}
+
 
 
 

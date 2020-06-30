@@ -35,28 +35,30 @@ class NoteBookViewModelTest: XCTestCase{
     func test_RemoveNote_Success() {
         viewModel.deleteNote(index: 0)
         XCTAssertTrue(interactorSpy.removeNoteCalled)
-
+        
     }
     
     
 }
 
 class NoteBookInteractorSpy: NoteBookInteractorLogic {
+    
     var fetchNotesCalled = false
     var saveNoteCalled = false
     var removeNoteCalled = false
     
-    func fetchNotes() {
+    func fetchNotes(input: NoteBookLogicModel.FetchNotes.Input) {
         fetchNotesCalled = true
     }
     
-    func saveNote(id: String?, note: String) {
+    func saveNote(input: NoteBookLogicModel.SaveNote.Input) {
         saveNoteCalled = true
     }
     
-    func removeNote(id: String) {
+    func removeNote(input: NoteBookLogicModel.RemoveNote.Input) {
         removeNoteCalled = true
     }
+    
     
     
 }
