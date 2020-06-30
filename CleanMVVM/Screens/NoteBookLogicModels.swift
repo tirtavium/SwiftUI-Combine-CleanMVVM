@@ -11,37 +11,37 @@ import Foundation
 enum NoteBookLogicModel{
     
     enum RemoveNote {
-        struct Input  {
+        struct Request  {
             var id: String
         }
-        struct Present {
+        struct Response {
             var error: NoteBookInteractorLogicError?
         }
-        struct Output {
+        struct ViewModel {
             var errorMessage: String?
         }
     }
     enum SaveNote {
-        struct Input {
+        struct Request {
             var id: String?
             var note: String
         }
-        struct Present {
+        struct Response {
             var error: NoteBookInteractorLogicError?
         }
-        struct Output {
+        struct ViewModel {
             var errorMessage: String?
         }
         
     }
     enum FetchNotes {
-        struct Input {
+        struct Request {
         }
-        struct Present {
+        struct Response {
             var notes: [Note]
             var error: NoteBookInteractorLogicError?
         }
-        struct Output {
+        struct ViewModel {
             var models: [NoteRowModel]
             var errorMessage: String?
         }

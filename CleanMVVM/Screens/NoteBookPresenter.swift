@@ -9,45 +9,45 @@
 import Foundation
 
 protocol NoteBookPresenterLogic: class {
-    func presentNotes(present: NoteBookLogicModel.FetchNotes.Present)
-    func presentRemoveNote(present: NoteBookLogicModel.RemoveNote.Present)
-    func presentSaveNote(present: NoteBookLogicModel.SaveNote.Present)
+    func presentNotes(response: NoteBookLogicModel.FetchNotes.Response)
+    func presentRemoveNote(response: NoteBookLogicModel.RemoveNote.Response)
+    func presentSaveNote(response: NoteBookLogicModel.SaveNote.Response)
 }
 protocol NoteBookPresenterOut: class {
-    func displayFetchNotes(output: NoteBookLogicModel.FetchNotes.Output)
-    func displaySaveNote(output: NoteBookLogicModel.SaveNote.Output)
-    func displayRemoveNote(output: NoteBookLogicModel.RemoveNote.Output)
+    func displayFetchNotes(viewModel: NoteBookLogicModel.FetchNotes.ViewModel)
+    func displaySaveNote(viewModel: NoteBookLogicModel.SaveNote.ViewModel)
+    func displayRemoveNote(viewModel: NoteBookLogicModel.RemoveNote.ViewModel)
 }
 class NoteBookPresenter: NoteBookPresenterLogic {
     
     var viewModel: NoteBookPresenterOut?
     
     
-    func presentRemoveNote(present: NoteBookLogicModel.RemoveNote.Present) {
-        switch present.error {
+    func presentRemoveNote(response: NoteBookLogicModel.RemoveNote.Response) {
+        switch response.error {
         case .data_not_found:
-            viewModel?.displayRemoveNote(output: NoteBookLogicModel.RemoveNote.Output(errorMessage: "Note Not Found"))
+            viewModel?.displayRemoveNote(viewModel: NoteBookLogicModel.RemoveNote.ViewModel(errorMessage: "Note Not Found"))
         default:
             break
         }
     }
     
-    func presentSaveNote(present: NoteBookLogicModel.SaveNote.Present) {
-        switch present.error {
+    func presentSaveNote(response: NoteBookLogicModel.SaveNote.Response) {
+        switch response.error {
                case .error_min_length:
-                   viewModel?.displaySaveNote(output: NoteBookLogicModel.SaveNote.Output(errorMessage: "Minimum Note Length is 6"))
+                   viewModel?.displaySaveNote(viewModel: NoteBookLogicModel.SaveNote.ViewModel(errorMessage: "Minimum Note Length is 6"))
                default:
                    break
                }
     }
     
     
-    func presentNotes(present: NoteBookLogicModel.FetchNotes.Present) {
+    func presentNotes(response: NoteBookLogicModel.FetchNotes.Response) {
         
-        let models = present.notes.map { (note) -> NoteRowModel in
+        let models = response.notes.map { (note) -> NoteRowModel in
                    NoteRowModel(title: note.title, id: note.id, contain: note.contain)
                }
-               viewModel?.displayFetchNotes(output: NoteBookLogicModel.FetchNotes.Output(models: models, errorMessage: nil))
+               viewModel?.displayFetchNotes(viewModel: NoteBookLogicModel.FetchNotes.ViewModel(models: models, errorMessage: nil))
     }
     
     

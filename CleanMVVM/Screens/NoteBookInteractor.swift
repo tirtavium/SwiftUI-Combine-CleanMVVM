@@ -9,9 +9,9 @@
 import Foundation
 
 protocol NoteBookInteractorLogic: class {
-    func fetchNotes(input: NoteBookLogicModel.FetchNotes.Input)
-    func saveNote(input: NoteBookLogicModel.SaveNote.Input)
-    func removeNote(input: NoteBookLogicModel.RemoveNote.Input)
+    func fetchNotes(request: NoteBookLogicModel.FetchNotes.Request)
+    func saveNote(request: NoteBookLogicModel.SaveNote.Request)
+    func removeNote(request: NoteBookLogicModel.RemoveNote.Request)
 }
 
 class NoteBookInteractor: NoteBookInteractorLogic{
@@ -24,49 +24,49 @@ class NoteBookInteractor: NoteBookInteractorLogic{
         self.noteService = noteService
     }
     
-    func fetchNotes(input: NoteBookLogicModel.FetchNotes.Input) {
+    func fetchNotes(request: NoteBookLogicModel.FetchNotes.Request) {
         
         noteService.fetchNotes { [weak self] (notes, error) in
                  guard let self = self else { return }
                  if error == nil {
-                     self.presenter?.presentNotes(present: NoteBookLogicModel.FetchNotes.Present(notes: notes, error: nil))
+                     self.presenter?.presentNotes(response: NoteBookLogicModel.FetchNotes.Response(notes: notes, error: nil))
                  }else{
                      
                  }
              }
     }
     
-    func saveNote(input: NoteBookLogicModel.SaveNote.Input) {
+    func saveNote(request: NoteBookLogicModel.SaveNote.Request) {
         var noteModel: Note!
         
-        if input.note.count > 6 {
-            noteModel = NoteBuilder.init(id: input.id, contain: input.note, title: String(input.note.prefix(6))).build()
+        if request.note.count > 6 {
+            noteModel = NoteBuilder.init(id: request.id, contain: request.note, title: String(request.note.prefix(6))).build()
         }else{
-            self.presenter?.presentSaveNote(present: NoteBookLogicModel.SaveNote.Present(error: NoteBookInteractorLogicError.error_min_length))
+            self.presenter?.presentSaveNote(response: NoteBookLogicModel.SaveNote.Response(error: NoteBookInteractorLogicError.error_min_length))
             return
         }
         noteService.saveNote(note: noteModel) {[weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(_):
-                self.fetchNotes(input: NoteBookLogicModel.FetchNotes.Input())
+                self.fetchNotes(request: NoteBookLogicModel.FetchNotes.Request())
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    func removeNote(input: NoteBookLogicModel.RemoveNote.Input) {
+    func removeNote(request: NoteBookLogicModel.RemoveNote.Request) {
         
-        noteService.deleteNote(id: input.id) { [weak self] (result) in
+        noteService.deleteNote(id: request.id) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(_):
-                self.fetchNotes(input: NoteBookLogicModel.FetchNotes.Input())
+                self.fetchNotes(request: NoteBookLogicModel.FetchNotes.Request())
             case .failure(let error):
                 print(error)
                 if error == .data_not_found {
-                    self.presenter?.presentRemoveNote(present: NoteBookLogicModel.RemoveNote.Present(error: NoteBookInteractorLogicError.data_not_found))
+                    self.presenter?.presentRemoveNote(response: NoteBookLogicModel.RemoveNote.Response(error: NoteBookInteractorLogicError.data_not_found))
                 }
             }
         }

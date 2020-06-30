@@ -47,15 +47,15 @@ class NoteBookInteractorSpy: NoteBookInteractorLogic {
     var saveNoteCalled = false
     var removeNoteCalled = false
     
-    func fetchNotes(input: NoteBookLogicModel.FetchNotes.Input) {
+    func fetchNotes(request: NoteBookLogicModel.FetchNotes.Request) {
         fetchNotesCalled = true
     }
     
-    func saveNote(input: NoteBookLogicModel.SaveNote.Input) {
+    func saveNote(request: NoteBookLogicModel.SaveNote.Request) {
         saveNoteCalled = true
     }
     
-    func removeNote(input: NoteBookLogicModel.RemoveNote.Input) {
+    func removeNote(request: NoteBookLogicModel.RemoveNote.Request) {
         removeNoteCalled = true
     }
     

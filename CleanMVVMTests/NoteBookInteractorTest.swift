@@ -37,25 +37,25 @@ class NoteBookInteractorTest: XCTestCase{
     
     func test_SaveNote_Failed() {
         
-        interactor.saveNote(input: NoteBookLogicModel.SaveNote.Input(id: nil, note: "12345"))
+        interactor.saveNote(request: NoteBookLogicModel.SaveNote.Request(id: nil, note: "12345"))
         XCTAssertTrue(presenterSpy.presentError)
 
     }
     
     func test_SaveNote_Success(){
         
-        interactor.saveNote(input: NoteBookLogicModel.SaveNote.Input(id: nil, note: "1234567"))
+        interactor.saveNote(request: NoteBookLogicModel.SaveNote.Request(id: nil, note: "1234567"))
         XCTAssertTrue(presenterSpy.presentNotes)
         
     }
     
     func test_DeleteNote_Success() {
-        interactor.removeNote(input: NoteBookLogicModel.RemoveNote.Input(id: "123"))
+        interactor.removeNote(request: NoteBookLogicModel.RemoveNote.Request(id: "123"))
         XCTAssertTrue(presenterSpy.presentNotes)
     }
     
     func test_fetch_Notes_Success() {
-        interactor.fetchNotes(input: NoteBookLogicModel.FetchNotes.Input())
+        interactor.fetchNotes(request: NoteBookLogicModel.FetchNotes.Request())
         XCTAssertTrue(presenterSpy.presentNotes)
     }
 }
@@ -90,15 +90,15 @@ class  NoteBookPresenterSpy: NoteBookPresenterLogic {
     var presentError = false
     
     
-    func presentNotes(present: NoteBookLogicModel.FetchNotes.Present) {
+    func presentNotes(response: NoteBookLogicModel.FetchNotes.Response) {
           presentNotes = true
     }
     
-    func presentRemoveNote(present: NoteBookLogicModel.RemoveNote.Present) {
+    func presentRemoveNote(response: NoteBookLogicModel.RemoveNote.Response) {
             presentError = true
     }
     
-    func presentSaveNote(present: NoteBookLogicModel.SaveNote.Present) {
+    func presentSaveNote(response: NoteBookLogicModel.SaveNote.Response) {
             presentError = true
     }
     

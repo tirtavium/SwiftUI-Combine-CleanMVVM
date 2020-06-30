@@ -32,19 +32,19 @@ class NoteBookViewModel: NoteBookPresenterOut, NoteBookViewModelObservable {
     var interactor: NoteBookInteractorLogic?
     var editedNote: NoteRowModel?
     
-    func displayFetchNotes(output: NoteBookLogicModel.FetchNotes.Output) {
-        self.dataSource = output.models
+    func displayFetchNotes(viewModel: NoteBookLogicModel.FetchNotes.ViewModel) {
+        self.dataSource = viewModel.models
     }
     
-    func displaySaveNote(output: NoteBookLogicModel.SaveNote.Output) {
-        if let message = output.errorMessage {
+    func displaySaveNote(viewModel: NoteBookLogicModel.SaveNote.ViewModel) {
+        if let message = viewModel.errorMessage {
             errorMessage = message
             showErrorMessage = true
         }
     }
     
-    func displayRemoveNote(output: NoteBookLogicModel.RemoveNote.Output) {
-        if let message = output.errorMessage {
+    func displayRemoveNote(viewModel: NoteBookLogicModel.RemoveNote.ViewModel) {
+        if let message = viewModel.errorMessage {
             errorMessage = message
             showErrorMessage = true
         }
@@ -69,17 +69,17 @@ extension NoteBookViewModel: NoteBookViewModelCommand {
     
     func deleteNote(index: Int) {
         let deletedData = dataSource[index]
-        interactor?.removeNote(input: NoteBookLogicModel.RemoveNote.Input(id: deletedData.id))
+        interactor?.removeNote(request: NoteBookLogicModel.RemoveNote.Request(id: deletedData.id))
     }
     
     func fetchNotes(){
-        interactor?.fetchNotes(input: NoteBookLogicModel.FetchNotes.Input())
+        interactor?.fetchNotes(request: NoteBookLogicModel.FetchNotes.Request())
     }
     func saveNote(){
         if editedNote == nil {
-            interactor?.saveNote(input: NoteBookLogicModel.SaveNote.Input(id: nil, note: note))
+            interactor?.saveNote(request: NoteBookLogicModel.SaveNote.Request(id: nil, note: note))
         }else{
-            interactor?.saveNote(input: NoteBookLogicModel.SaveNote.Input(id: editedNote?.id, note: note))
+            interactor?.saveNote(request: NoteBookLogicModel.SaveNote.Request(id: editedNote?.id, note: note))
         }
         
     }
