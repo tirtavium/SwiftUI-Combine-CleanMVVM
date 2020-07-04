@@ -40,7 +40,7 @@ Clear UI or App flow :
 
 External Component :
   - NoteService Protocol can have many implementation class, and can be used by many of NoteBookInteractor since all they know is protocol so the open closed principle is possible since we can have many implementation as we wanted.
-  - Network, Core Data, file storing, or any external component is the responsible of service implementation, we no need unit test for service implementation.
+  - Network, Core Data, file storing, or any external component is the responsible of service implementation, unit test in this part more about integration test, make sure that fragility of integration test not make development harder.
 
 # Benefit
 
@@ -53,7 +53,8 @@ External Component :
   - Team knowledge gap, junior programmer who still in the pace of programming will be hard to get the full vision of this, they would likely to find the way to violate this design. 
   Too much experienced programmer if that person not able to getting teach by other, because no one able to change the person expect the person itself.
   - Strict rule of merge code, this need to make sure every day since the good quality of code base is long term commitment.
-  - Business stakeholder who likes fast and done, if you can't finish it in certain time, you're not a good programmer. don't let your ability to crafting a good quality software getting hijacked by business stakeholder for personal benefit.
+  - Business stakeholder who likes fast and done, if you can't finish it in certain time, you're not a good programmer. don't let your ability to crafting a good quality software getting hijacked by business stakeholder who think about his own personal benefit.
 
 # Thanks
+  - Please your feedback on issue.
 
