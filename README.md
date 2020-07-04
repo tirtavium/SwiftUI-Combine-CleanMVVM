@@ -56,5 +56,5 @@ External Component :
   - Business stakeholder who likes fast and done, if you can't finish it in certain time, you're not a good programmer. don't let your ability to crafting a good quality software getting hijacked by business stakeholder who think about his own personal benefit.
 
 # Thanks
-  - Please your feedback on issue.
+  - Please, put your feedback on issues section.
 
