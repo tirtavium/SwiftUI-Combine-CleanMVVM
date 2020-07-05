@@ -1,3 +1,3 @@
 xcodebuild clean test -project CleanMVVM.xcodeproj \
             -scheme CleanMVVM \
-            -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=latest"
+            -destination "id=211F3388-A5EB-45F1-BE19-3488DDF95C87"
