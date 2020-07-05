@@ -7,15 +7,24 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    runs-on: macos-latest
-
+  test:
+    # Job name is Test
+    name: Test
+    # This job runs on macOS
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        destination: ['platform=iOS Simulator,OS=13.1,name=iPhone 8']
+        xcode: ['/Applications/Xcode_11.1.app/Contents/Developer']
     steps:
-    - uses: actions/checkout@v2
-    - name: Force XCode 11.3
-      run: sudo xcode-select -switch /Applications/Xcode_11.3.app
-    - name: list all ios simulators
-      run: instruments -s devices
-    - name: Testing iOS app
-      run: exec ./.github/scripts/pipe_test.sh
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Bundle Install
+        run: bundle install
+        env:
+          BUNDLE_GITHUB__COM: x-access-token:${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+      - name: Build and test
+        run: bundle exec fastlane scan --destination "${destination}" --scheme "CleanMVVM"
+        env:
+          destination: ${{ matrix.destination }}
+          DEVELOPER_DIR: ${{ matrix.xcode }}
