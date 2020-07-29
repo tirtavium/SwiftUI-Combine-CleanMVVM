@@ -36,7 +36,7 @@ Clean, easy to maintain and readable business process :
 Clear UI or App flow :
   - Presenter for translate raw data given by interactor into more user friendly to viewmodel.
   - Combine framework is only use on ViewModel.
-  - View component (UIKit/SwiftUI) only use on ViewController as the humble architecture principle we not test the viewcontroller.
+  - View component (UIKit/SwiftUI) only use on ViewController as the humble object principle we not test the viewcontroller.
 
 External Component :
   - NoteService Protocol can have many implementation class, and can be used by many of NoteBookInteractor since all they know is protocol so the open closed principle is possible since we can have many implementation as we wanted.
