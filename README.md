@@ -2,6 +2,9 @@
 
 ![Swift](https://github.com/tirtavium/SwiftUI-Combine-CleanMVVM/workflows/Swift/badge.svg)
 
+### Related article
+[medium.com](https://tirtavium.medium.com/swiftui-combine-clean-architecture-b3ab3bd0bb7)
+
 This repo is trying to approach MVVM with clean architecture design by uncle bob.
 
 All of the component is protocol oriented meaning that all related operation class variables is written as protocol, so with this code base able to accomplish composition over inheritance practice.
@@ -9,8 +12,8 @@ All of the component is protocol oriented meaning that all related operation cla
 
 | Component | Purpose |
 | ------ | ------ |
-| Entity | Note Model, the main product of this Note Book App |
-| Interactor | Logic of the business case |
+| Entity | Note Model, the main product of this Note Book App, pure logic business case |
+| Interactor | Logic of the application business case. |
 | Presenter | To present the processed data by interactor to View Model  |
 | View Model | To keep the UI state and data by Combine |
 | View | User Interface use swift UI |
